@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from unittest.mock import patch, Mock, ANY, call
 import responses
 
-from src.eventbridge import eventbridge
+from src.eventbridge.eventbridge import Eventbridge
 from src.scheduleHandler import lambda_handler
 from tst.responseData.scheduleResponseWithGames import nhlScheduleResponseString
 
@@ -13,7 +13,7 @@ schedule_data_todays_games = json.loads(nhlScheduleResponseString)
 
 class TestLambdaScheduleHandler(unittest.TestCase):
     @responses.activate
-    @patch.object(eventbridge, 'schedule')
+    @patch.object(Eventbridge, 'schedule')
     def test_lambda_handler(self, mockEventbridge):
         responses.add(responses.GET,
                       'https://api-web.nhle.com/v1/schedule/now',

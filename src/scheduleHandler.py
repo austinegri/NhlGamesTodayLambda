@@ -5,12 +5,14 @@ from datetime import datetime, timedelta
 import requests
 
 from src.data.game import Game
-from src.eventbridge import eventbridge
+from src.eventbridge.eventbridge import Eventbridge
 
 logger = logging.getLogger()
 
 NHL_SCHEDULE_ENDPOINT = "https://api-web.nhle.com/v1/schedule/now"
 def lambda_handler(event, context):
+    eventbridge = Eventbridge()
+
     r = requests.get(NHL_SCHEDULE_ENDPOINT)
     r_json = r.json()
     logger.info(r.json())
