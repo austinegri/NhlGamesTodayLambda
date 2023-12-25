@@ -1,3 +1,4 @@
+nhlScheduleResponseString = '''
 {
   "nextStartDate": "2023-12-24",
   "previousStartDate": "2023-12-10",
@@ -3490,3 +3491,4 @@
   "playoffEndDate": "2024-06-18",
   "numberOfGames": 54
 }
+'''
