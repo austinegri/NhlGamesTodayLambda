@@ -4,9 +4,8 @@ from datetime import datetime, timedelta
 
 import requests
 
-from src.data.game import Game
-from src.eventbridge.eventbridge import Eventbridge
-
+from data.game import Game
+from eventbridge.eventbridge import Eventbridge
 
 def lambda_handler(event, context):
     logger = logging.getLogger()

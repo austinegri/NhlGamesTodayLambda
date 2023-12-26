@@ -1,14 +1,14 @@
 import os
+import unittest
 from dataclasses import dataclass
 from datetime import datetime
 from unittest import TestCase
 from unittest.mock import patch, ANY
 
 import boto3
-from dateutil.tz import tzlocal
 from moto.scheduler import mock_scheduler
 
-from src.eventbridge.eventbridge import Eventbridge
+from eventbridge.eventbridge import Eventbridge
 
 
 class TestEventbridge(TestCase):
@@ -49,3 +49,6 @@ class Schedule:
     Name: str
     State: str
     Target: dict
+
+if __name__ == '__main__':
+    unittest.main()

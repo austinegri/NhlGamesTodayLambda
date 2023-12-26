@@ -1,11 +1,11 @@
 import json
 import unittest
-from datetime import datetime, timedelta
-from unittest.mock import patch, Mock, ANY, call
+from datetime import datetime
+from unittest.mock import patch, call
 import responses
 
-from src.eventbridge.eventbridge import Eventbridge
-from src.scheduleHandler import lambda_handler
+from eventbridge.eventbridge import Eventbridge
+from scheduleHandler import lambda_handler
 from tst.responseData.scheduleResponseWithGames import nhlScheduleResponseString
 
 schedule_data_todays_games = json.loads(nhlScheduleResponseString)
