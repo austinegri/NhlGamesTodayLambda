@@ -1,0 +1,29 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  NhlGamesTodayLambda
+
+  Sample SAM Template for NhlGamesTodayLambda
+Resources:
+  NhlGamesTodayLambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      Timeout: 60
+      MemorySize: 128
+      Handler: scheduleHandler.lambda_handler
+      CodeUri: NhlGamesTodayLambda
+      Runtime: python3.10
+      Architectures:
+      - x86_64
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: NhlGamesTodayLambda
+    Description: Check for Nhl Games today and schedule eventbridge for each
+    Author: austinegri
+    SpdxLicenseId: MIT
+    LicenseUrl: LICENSE
+    ReadmeUrl: README.md
+    Labels: [ 'tst' ]
+    HomePageUrl: https://github.com/austinegri/NhlGamesTodayLambda
+    SemanticVersion: 0.0.1
+    SourceCodeUrl: https://github.com/austinegri/NhlGamesTodayLambda.git
