@@ -10,29 +10,30 @@ from moto.scheduler import mock_scheduler
 
 from eventbridge.eventbridge import Eventbridge
 
-
+GAME_ID = '1111'
 class TestEventbridge(TestCase):
 
-    @patch.dict(os.environ, {"EVENT_BRIDGE_RULE": "GameDayGameStartRule",
-                             "STATE_MACHINE": 'stepFunctionARN',
-                             "STATE_MACHINE_EXECUTION_ROLE": "stepFunctionRole"}, clear=True)
+    @patch.dict(os.environ, {
+        "STATE_MACHINE": 'stepFunctionARN',
+        "STATE_MACHINE_EXECUTION_ROLE": "stepFunctionRole"
+    }, clear=True)
     @mock_scheduler
     def test_schedule(self):
         mockScheduler = boto3.client("scheduler")
 
         underTest = Eventbridge()
 
-        underTest.schedule('1111', datetime(year=2023, month=12, day= 12, hour=19, minute= 55))
+        underTest.schedule(GAME_ID, datetime(year=2023, month=12, day= 12, hour=19, minute= 55))
 
         scheduleResponse = mockScheduler.list_schedules()
         actualScheduleList = scheduleResponse['Schedules']
         actualSchedule = Schedule(**actualScheduleList[0])
 
-        expectedSchedule = Schedule(Arn= 'arn:aws:scheduler:us-east-1:123456789012:schedule/default/GameDayGameStartRule',
+        expectedSchedule = Schedule(Arn= 'arn:aws:scheduler:us-east-1:123456789012:schedule/default/GameDayStart_{}'.format(GAME_ID),
                                      CreationDate= ANY,
                                      GroupName= 'default',
                                      LastModificationDate= ANY,
-                                     Name= 'GameDayGameStartRule',
+                                     Name= 'GameDayStart_{}'.format(GAME_ID),
                                      State= 'ENABLED',
                                      Target= {'Arn': 'stepFunctionARN'})
 

@@ -9,7 +9,7 @@ class Eventbridge:
     scheduler = boto3.client('scheduler')
 
     def schedule(self, gameId, scheduleTime: datetime):
-        response = self.scheduler.create_schedule(Name= os.environ.get('EVENT_BRIDGE_RULE', "GameDayGameStartRule"),
+        response = self.scheduler.create_schedule(Name= 'GameDayStart_{}'.format(gameId),
                                              ScheduleExpression= 'at({})'.format(scheduleTime.strftime('%Y-%m-%dT%H:%M:%S')),
                                              FlexibleTimeWindow={
                                                  'MaximumWindowInMinutes': 2,
