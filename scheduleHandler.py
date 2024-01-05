@@ -26,9 +26,9 @@ def lambda_handler(event, context):
                 game = Game(**gameJson) # classFromArgs(Game, gameJson)
                 gameTime = datetime.strptime(game.startTimeUTC, '%Y-%m-%dT%H:%M:%SZ')
                 scheduleTime = gameTime - timedelta(minutes=5)
-                eventbridge.schedule(gameId= game.id, scheduleTime= scheduleTime)
-
-                logger.info("Added eventbridge rule for game {} at time {}".format(game.id, scheduleTime))
+                logger.info("Calling eventbridge to create schedule for game {} at time {}".format(game.id, scheduleTime))
+                response = eventbridge.schedule(gameId= game.id, scheduleTime= scheduleTime)
+                logger.info("Added eventbridge schedule for game {} at time {}, Eventbridge response: {}".format(game.id, scheduleTime, response))
                 scheduled_games.add(game.id)
             except:
                 logger.exception("Cannot schedule game for {}".format(gameJson))
