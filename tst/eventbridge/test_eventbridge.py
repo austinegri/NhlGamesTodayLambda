@@ -41,6 +41,35 @@ class TestEventbridge(TestCase):
         self.assertEqual(expectedSchedule, actualSchedule)
 
 
+    @patch.dict(os.environ, {
+        "STATE_MACHINE": 'stepFunctionARN',
+        "STATE_MACHINE_EXECUTION_ROLE": "stepFunctionRole"
+    }, clear=True)
+    @mock_scheduler
+    def test_scheduleConflict(self):
+        mockScheduler = boto3.client("scheduler")
+
+        underTest = Eventbridge()
+
+        underTest.schedule(GAME_ID, datetime(year=2023, month=12, day= 12, hour=19, minute= 55))
+        underTest.schedule(GAME_ID, datetime(year=2023, month=12, day= 12, hour=19, minute= 55))
+
+        scheduleResponse = mockScheduler.list_schedules()
+        actualScheduleList = scheduleResponse['Schedules']
+        actualSchedule = Schedule(**actualScheduleList[0])
+
+        expectedSchedule = Schedule(Arn= 'arn:aws:scheduler:us-east-1:123456789012:schedule/default/GameDayStart_{}'.format(GAME_ID),
+                                    CreationDate= ANY,
+                                    GroupName= 'default',
+                                    LastModificationDate= ANY,
+                                    Name= 'GameDayStart_{}'.format(GAME_ID),
+                                    State= 'ENABLED',
+                                    Target= {'Arn': 'stepFunctionARN'})
+
+        self.assertEqual(len(actualScheduleList), 1)
+        self.assertEqual(expectedSchedule, actualSchedule)
+
+
 @dataclass
 class Schedule:
     Arn: str

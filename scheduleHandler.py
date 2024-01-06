@@ -8,8 +8,10 @@ import requests
 from data.game import Game
 from eventbridge.eventbridge import Eventbridge
 
+
+logger = logging.getLogger(__name__)
+
 def lambda_handler(event, context):
-    logger = logging.getLogger()
     NHL_SCHEDULE_ENDPOINT = "https://api-web.nhle.com/v1/schedule/{}"
 
     eventbridge = Eventbridge()
@@ -29,7 +31,6 @@ def lambda_handler(event, context):
                 game = Game(**gameJson) # classFromArgs(Game, gameJson)
                 gameTime = datetime.strptime(game.startTimeUTC, '%Y-%m-%dT%H:%M:%SZ')
                 scheduleTime = gameTime - timedelta(minutes=5)
-                logger.info("Calling eventbridge to create schedule for game {} at time {}".format(game.id, scheduleTime))
                 response = eventbridge.schedule(gameId= game.id, scheduleTime= scheduleTime)
                 logger.info("Added eventbridge schedule for game {} at time {}, Eventbridge response: {}".format(game.id, scheduleTime, response))
                 scheduled_games.add(game.id)
