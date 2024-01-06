@@ -1,6 +1,7 @@
 import json
 import logging
 from datetime import datetime, timedelta
+import pytz
 
 import requests
 
@@ -9,11 +10,13 @@ from eventbridge.eventbridge import Eventbridge
 
 def lambda_handler(event, context):
     logger = logging.getLogger()
-    NHL_SCHEDULE_ENDPOINT = "https://api-web.nhle.com/v1/schedule/now"
+    NHL_SCHEDULE_ENDPOINT = "https://api-web.nhle.com/v1/schedule/{}"
 
     eventbridge = Eventbridge()
 
-    r = requests.get(NHL_SCHEDULE_ENDPOINT)
+    currentDate = datetime.now(pytz.timezone('America/New_York'))
+
+    r = requests.get(NHL_SCHEDULE_ENDPOINT.format(currentDate.strftime('%Y-%m-%d')))
     r_json = r.json()
     logger.info(r.json())
 
