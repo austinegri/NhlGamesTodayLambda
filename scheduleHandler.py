@@ -9,7 +9,7 @@ from data.game import Game
 from eventbridge.eventbridge import Eventbridge
 
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger()
 
 def lambda_handler(event, context):
     NHL_SCHEDULE_ENDPOINT = "https://api-web.nhle.com/v1/schedule/{}"

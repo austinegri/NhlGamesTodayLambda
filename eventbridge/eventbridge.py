@@ -5,7 +5,7 @@ from datetime import datetime
 
 import boto3
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger()
 
 class Eventbridge:
     scheduler = boto3.client('scheduler')
