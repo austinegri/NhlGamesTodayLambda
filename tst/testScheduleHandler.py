@@ -2,6 +2,8 @@ import json
 import unittest
 from datetime import datetime
 from unittest.mock import patch, call
+
+import pytz
 import responses
 
 from eventbridge.eventbridge import Eventbridge
@@ -15,8 +17,9 @@ class TestLambdaScheduleHandler(unittest.TestCase):
     @responses.activate
     @patch.object(Eventbridge, 'schedule')
     def test_lambda_handler(self, mockEventbridge):
+        currentDate = datetime.now(pytz.timezone('America/New_York'))
         responses.add(responses.GET,
-                      'https://api-web.nhle.com/v1/schedule/now',
+                      'https://api-web.nhle.com/v1/schedule/{}'.format(currentDate.strftime('%Y-%m-%d')),
                       json= schedule_data_todays_games,
                       status= 200)
 
