@@ -108,6 +108,8 @@ nhlScheduleResponseString = '''
           },
           "periodDescriptor": {},
           "ticketsLink": "https://www.ticketmaster.com/event/04005EDC98081468?brand=nhl&wt.mc_id=NHL_LEAGUE_CHI_SCHED_PAGE_LINK_GM14&utm_source=nhl.com&utm_medium=client&utm_campaign=NHL_LEAGUE_CHI&utm_content=SCHED_PAGE_LINK_GM14",
+          "specialEvent":{"default":"2024 Navy Federal Credit Union NHL Stadium Series"},
+          "specialEventLogo":"https://assets.nhle.com/special_event_season/20232024/svg/2023020863-us.svg",
           "gameCenterLink": "/gamecenter/van-vs-chi/2023/12/17/2023020474"
         },
         {

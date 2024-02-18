@@ -1,15 +1,17 @@
 import json
 import logging
+import os
 from datetime import datetime, timedelta
 import pytz
 
 import requests
 
-from data.game import Game
-from eventbridge.eventbridge import Eventbridge
+from src.data.game import Game
+from src.eventbridge.eventbridge import Eventbridge
 
 
 logger = logging.getLogger()
+logger.setLevel(os.environ.get('LOG_LEVEL', 'INFO'))
 
 def lambda_handler(event, context):
     NHL_SCHEDULE_ENDPOINT = "https://api-web.nhle.com/v1/schedule/{}"
@@ -20,7 +22,6 @@ def lambda_handler(event, context):
 
     r = requests.get(NHL_SCHEDULE_ENDPOINT.format(currentDate.strftime('%Y-%m-%d')))
     r_json = r.json()
-    logger.info(r.json())
 
     scheduled_games = set()
 
@@ -28,7 +29,7 @@ def lambda_handler(event, context):
         gamesToday = r_json.get('gameWeek')[0]['games']
         for gameJson in gamesToday:
             try:
-                game = Game(**gameJson) # classFromArgs(Game, gameJson)
+                game = Game.fromDict(gameJson) # classFromArgs(Game, gameJson)
                 gameTime = datetime.strptime(game.startTimeUTC, '%Y-%m-%dT%H:%M:%SZ')
                 scheduleTime = gameTime - timedelta(minutes=5)
                 response = eventbridge.schedule(gameId= game.id, scheduleTime= scheduleTime)

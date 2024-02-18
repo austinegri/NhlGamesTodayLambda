@@ -8,7 +8,7 @@ from unittest.mock import patch, ANY
 import boto3
 from moto.scheduler import mock_scheduler
 
-from eventbridge.eventbridge import Eventbridge
+from src.eventbridge.eventbridge import Eventbridge
 
 GAME_ID = '1111'
 class TestEventbridge(TestCase):

@@ -6,9 +6,9 @@ from unittest.mock import patch, call
 import pytz
 import responses
 
-from eventbridge.eventbridge import Eventbridge
-from scheduleHandler import lambda_handler
-from tst.responseData.scheduleResponseWithGames import nhlScheduleResponseString
+from src.eventbridge.eventbridge import Eventbridge
+from src.scheduleHandler import lambda_handler
+from test.responseData.scheduleResponseWithGames import nhlScheduleResponseString
 
 schedule_data_todays_games = json.loads(nhlScheduleResponseString)
 
