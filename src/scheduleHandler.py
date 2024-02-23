@@ -13,12 +13,16 @@ from src.eventbridge.eventbridge import Eventbridge
 logger = logging.getLogger()
 logger.setLevel(os.environ.get('LOG_LEVEL', 'INFO'))
 
+DATE = 'date'
 def lambda_handler(event, context):
     NHL_SCHEDULE_ENDPOINT = "https://api-web.nhle.com/v1/schedule/{}"
 
     eventbridge = Eventbridge()
 
-    currentDate = datetime.now(pytz.timezone('America/New_York'))
+    if DATE in event:
+        currentDate = datetime.strptime(event[DATE], '%Y-%m-%d')
+    else:
+        currentDate = datetime.now(pytz.timezone('America/New_York'))
 
     r = requests.get(NHL_SCHEDULE_ENDPOINT.format(currentDate.strftime('%Y-%m-%d')))
     r_json = r.json()
